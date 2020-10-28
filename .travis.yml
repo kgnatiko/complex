@@ -1,0 +1,22 @@
+sudo: require
+services:
+  - docker
+
+before_install:
+  - doker build -t kgnatiko/complex -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run kgnatiko/complex npm test -- --coverage
+
+after_success:
+  - docker build -t kgnatiko/complex-client ./client
+  - docker build -t kgnatiko/complex-nginx ./nginx
+  - docker build -t kgnatiko/complex-server ./server
+  - docker build -t kgnatiko/complex-worker ./worker
+  # login to the docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  # Take those image and push them to the docker hub
+  - docker push kgnatiko/complex-client
+  - docker push kgnatiko/complex-nginx
+  - docker push kgnatiko/complex-server
+  - docker push kgnatiko/complex-worker
