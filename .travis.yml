@@ -20,3 +20,16 @@ after_success:
   - docker push kgnatiko/complex-nginx
   - docker push kgnatiko/complex-server
   - docker push kgnatiko/complex-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1b
+  app: Mulit-Docker
+  env: MulitDocker-env
+  bucket_name: elasticbeanstalk-us-east-1-620363849875
+  bucket_path: docker-complex
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
