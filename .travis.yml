@@ -3,7 +3,7 @@ services:
   - docker
 
 before_install:
-  - doker build -t kgnatiko/complex -f ./client/Dockerfile.dev ./client
+  - docker build -t kgnatiko/complex -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run kgnatiko/complex npm test -- --coverage
